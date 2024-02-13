@@ -1,0 +1,3 @@
+/home/duo/SimpleOS/cmake-build-debug/CMakeFiles/SimpleOS.dir
+/home/duo/SimpleOS/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/duo/SimpleOS/cmake-build-debug/CMakeFiles/rebuild_cache.dir
