@@ -5,9 +5,6 @@
 #include <unistd.h>
 #include <memory.h>
 
-/*=================================
- *  自定义打印输出
- ==================================*/
 #define INFO_OUTPUT         3
 #define WARNING_OUTPUT      2
 #define DEBUG_OUTPUT        1

@@ -1,5 +1,5 @@
-#ifndef ZIYA_OS_KERNEL_FILEINFO_H
-#define ZIYA_OS_KERNEL_FILEINFO_H
+#ifndef OS_KERNEL_FILEINFO_H
+#define OS_KERNEL_FILEINFO_H
 
 typedef struct {
     char*   name;
@@ -9,4 +9,4 @@ typedef struct {
 
 Fileinfo* read_file(const char* filename);
 
-#endif //ZIYA_OS_KERNEL_FILEINFO_H
+#endif

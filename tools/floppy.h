@@ -1,5 +1,5 @@
-#ifndef ZIYA_OS_KERNEL_FLOPPY_H
-#define ZIYA_OS_KERNEL_FLOPPY_H
+#ifndef OS_KERNEL_FLOPPY_H
+#define OS_KERNEL_FLOPPY_H
 
 #include "fileinfo.h"
 
@@ -30,4 +30,4 @@ void write_floppy_fileinfo(Floppy* floppy, Fileinfo* fileinfo, int face, int tra
  */
 void create_image(const char* name, Floppy* floppy);
 
-#endif //ZIYA_OS_KERNEL_FLOPPY_H
+#endif
