@@ -3,4 +3,4 @@ project(SimpleOS C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(SimpleOS main.c)
+add_executable(SimpleOS main.c tools/floppy.c tools/fileinfo.c)

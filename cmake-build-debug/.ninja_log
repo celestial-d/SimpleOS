@@ -1,3 +1,7 @@
 # ninja log v5
-0	19	1707868426417529421	CMakeFiles/SimpleOS.dir/main.c.o	b56bfcd217fdf8f
+1	17	1707869069776685926	CMakeFiles/SimpleOS.dir/main.c.o	b56bfcd217fdf8f
 19	34	1707868426425529363	SimpleOS	e6aea2e9a8d2c18d
+0	15	1707869159326715134	CMakeFiles/SimpleOS.dir/main.c.o	b56bfcd217fdf8f
+1	26	1707869159334714969	CMakeFiles/SimpleOS.dir/tools/fileinfo.c.o	6318bc31570c2bdf
+1	29	1707869159334714969	CMakeFiles/SimpleOS.dir/tools/floppy.c.o	ae5a9eaca81f700f
+29	43	1707869159350714630	SimpleOS	76d6442995284db7
