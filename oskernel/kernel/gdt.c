@@ -2,6 +2,7 @@
 #include "../include/linux/kernel.h"
 #include "../include/linux/traps.h"
 #include "../include/string.h"
+
 #define GDT_SIZE    256
 
 u64 gdt[GDT_SIZE] = {0};

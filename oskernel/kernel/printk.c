@@ -1,5 +1,6 @@
 #include "../include/linux/kernel.h"
 #include "../include/linux/tty.h"
+#include "../include/asm/system.h"
 
 static char buf[1024];
 

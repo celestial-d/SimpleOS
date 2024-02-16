@@ -13,7 +13,7 @@ interrupt_handler_entry:
 
     iret
 
-; 键盘中断
+; keyboard interrupt
 global keymap_handler_entry
 keymap_handler_entry:
     push 0x21
@@ -22,7 +22,7 @@ keymap_handler_entry:
 
     iret
 
-; 异常处理
+; interrupt handling
 ;
 ; idt_index
 ; edi
@@ -89,15 +89,15 @@ INTERRUPT_HANDLER 0x1d; reserved
 INTERRUPT_HANDLER 0x1e; reserved
 INTERRUPT_HANDLER 0x1f; reserved
 
-INTERRUPT_HANDLER 0x20; clock 时钟中断
-INTERRUPT_HANDLER 0x21; 键盘中断
+INTERRUPT_HANDLER 0x20; clock interrupt
+INTERRUPT_HANDLER 0x21; keyboard interrupt
 INTERRUPT_HANDLER 0x22
 INTERRUPT_HANDLER 0x23
 INTERRUPT_HANDLER 0x24
 INTERRUPT_HANDLER 0x25
 INTERRUPT_HANDLER 0x26
 INTERRUPT_HANDLER 0x27
-INTERRUPT_HANDLER 0x28; rtc 实时时钟
+INTERRUPT_HANDLER 0x28; rtc clock
 INTERRUPT_HANDLER 0x29
 INTERRUPT_HANDLER 0x2a
 INTERRUPT_HANDLER 0x2b

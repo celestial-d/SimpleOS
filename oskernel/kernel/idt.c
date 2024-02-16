@@ -13,7 +13,7 @@ extern void interrupt_handler_entry();
 extern void keymap_handler_entry();
 extern void clock_handler_entry();
 
-// 是在汇编中定义的
+
 extern int interrupt_handler_table[0x2f];
 
 void idt_init() {
@@ -38,15 +38,15 @@ void idt_init() {
 
         p->offset0 = handler & 0xffff;
         p->offset1 = (handler >> 16) & 0xffff;
-        p->selector = 1 << 3; // 代码段
-        p->reserved = 0;      // 保留不用
-        p->type = 0b1110;     // 中断门
-        p->segment = 0;       // 系统段
-        p->DPL = 0;           // 内核态
-        p->present = 1;       // 有效
+        p->selector = 1 << 3;
+        p->reserved = 0;
+        p->type = 0b1110;
+        p->segment = 0;
+        p->DPL = 0;
+        p->present = 1;
     }
 
-    // 让CPU知道中断向量表
+
     write_xdt_ptr(&idt_ptr, INTERRUPT_TABLE_SIZE * 8, interrupt_table);
 
     asm volatile("lidt idt_ptr;");
