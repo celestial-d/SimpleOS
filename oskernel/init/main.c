@@ -5,8 +5,9 @@
 void kernel_main(void) {
     console_init();
     gdt_init();
-
+    idt_init();
     printk("os is cool\n");
 
+    __asm__("sti;");
     while (true);
 }

@@ -16,6 +16,17 @@ typedef struct gdt_item_t {
     unsigned char base_high;
 } __attribute__((packed)) gdt_item_t;
 
+typedef struct interrupt_gate_t {
+    short offset0;    //  0 ~ 15
+    short selector;   //
+    char reserved;    //
+    char type : 4;    //
+    char segment : 1; //
+    char DPL : 2;     // permission
+    char present : 1; // valid or not
+    short offset1;    //  16 ~ 31 位
+} __attribute__((packed)) interrupt_gate_t;
+
 typedef struct gdt_selector_t {
     char RPL : 2;
     char TI : 1;
