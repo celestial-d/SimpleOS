@@ -39,6 +39,8 @@ void print_check_memory_info();
 void memory_init();
 void memory_map_int();
 
+void virtual_memory_init();
+
 void* get_free_page();
 void free_page(void* p);
 
