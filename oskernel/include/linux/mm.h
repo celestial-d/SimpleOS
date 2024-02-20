@@ -44,4 +44,6 @@ void virtual_memory_init();
 void* get_free_page();
 void free_page(void* p);
 
+void* kmalloc(size_t size);
+void kfree_s(void *obj, int size);
 #endif

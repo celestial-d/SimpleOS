@@ -2,6 +2,8 @@
 #include "../include/linux/kernel.h"
 #include "../include/linux/traps.h"
 #include "../include/linux/mm.h"
+#include "../include/linux/task.h"
+#include "../include/linux/sched.h"
 
 extern void clock_init();
 
@@ -15,6 +17,9 @@ void kernel_main(void) {
     memory_init();
     memory_map_int();
     virtual_memory_init();
+
+    task_init();
+    sched();
 
     __asm__("sti;");
 
