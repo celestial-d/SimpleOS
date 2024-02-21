@@ -52,15 +52,20 @@ typedef struct tss_t {
 } __attribute__((packed)) tss_t;
 
 typedef struct task_t {
+    tss_t           tss;
     int             pid;
-    task_fun_t      function;
+    int             ppid;
+    char            name[32];
     task_state_t    state;
-
-    tss_t           context;
-
-    int             sched_times;
-
-    int             cr3;
+    int             exit_code;
+    int             counter;
+    int             priority;
+    int             scheduling_times;
+    int             esp0;                   // esp3 saved in tss
+    int             ebp0;
+    int             esp3;
+    int             ebp3;
+    int             magic;
 }task_t;
 
 typedef union task_union_t {
@@ -69,10 +74,21 @@ typedef union task_union_t {
 }task_union_t;
 
 task_t* create_task();
-
 void task_init();
 
-int get_sched_times(task_t* task);
+void task_exit(int code, task_t* task);
+void current_task_exit(int code);
 
-void current_task_exit();
+void task_sleep(int ms);
+void task_wakeup();
+
+int inc_scheduling_times(task_t* task);
+
+pid_t get_task_pid(task_t* task);
+pid_t get_task_ppid(task_t* task);
+
+task_t* create_child(char* name, task_fun_t fun, int priority);
+
+int get_esp3(task_t* task);
+void set_esp3(task_t* task, int esp);
 #endif
