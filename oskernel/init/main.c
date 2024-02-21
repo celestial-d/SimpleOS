@@ -7,6 +7,22 @@
 
 extern void clock_init();
 
+void printf(char* msg) {
+    asm volatile("mov eax, 0; int 0x80"::"b"(msg));
+}
+
+void fread(char* msg) {
+    asm volatile("mov eax, 1; int 0x80"::"b"(msg));
+}
+
+void user_entry() {
+    printf("user entry::::\n");
+
+    fread("qwertyui");
+
+    while (true);
+}
+
 void kernel_main(void) {
     console_init();
     gdt_init();
@@ -16,12 +32,10 @@ void kernel_main(void) {
     print_check_memory_info();
     memory_init();
     memory_map_int();
-    virtual_memory_init();
 
     task_init();
-    sched();
 
     __asm__("sti;");
 
-    while (true);
+    while (true) ;
 }

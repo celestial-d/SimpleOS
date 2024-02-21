@@ -1,6 +1,7 @@
 #include "../include/asm/system.h"
 #include "../include/linux/kernel.h"
 #include "../include/linux/traps.h"
+#include "../include/linux/task.h"
 #include "../include/string.h"
 
 #define GDT_SIZE    256
@@ -11,6 +12,12 @@ xdt_ptr_t gdt_ptr;
 
 int r3_code_selector;
 int r3_data_selector;
+int tss_selector;
+
+int r0_code_selector = 1 << 3;
+int r0_data_selector = 2 << 3;
+
+tss_t tss;
 
 static void r3_gdt_code_item(int gdt_index, int base, int limit) {
     // start from 4
@@ -55,6 +62,29 @@ static void r3_gdt_data_item(int gdt_index, int base, int limit) {
     item->big = 1;
     item->granularity = 1;
     item->base_high = base >> 24 & 0xff;
+}
+
+void init_tss_item(int gdt_index, int base, int limit) {
+    printk("init tss...\n");
+
+    tss.ss0 = r0_data_selector;
+    tss.esp0 = 0x200000;
+
+    gdt_item_t* item = &gdt[gdt_index];
+
+    item->base_low = base & 0xffffff;
+    item->base_high = (base >> 24) & 0xff;
+    item->limit_low = limit & 0xffff;
+    item->limit_high = (limit >> 16) & 0xf;
+    item->segment = 0;
+    item->granularity = 0;
+    item->big = 0;
+    item->long_mode = 0;
+    item->present = 1;
+    item->DPL = 0;
+    item->type = 0b1001;
+
+    asm volatile("ltr ax;"::"a"(6 << 3));
 }
 
 void gdt_init() {
