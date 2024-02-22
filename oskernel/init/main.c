@@ -1,34 +1,37 @@
 #include "../include/linux/tty.h"
-#include "../include/linux/kernel.h"
 #include "../include/linux/traps.h"
 #include "../include/linux/mm.h"
 #include "../include/linux/task.h"
-#include "../include/linux/sched.h"
+#include "../include/stdio.h"
+#include "../include/unistd.h"
 
 extern void clock_init();
-extern void init_tss_item(int gdt_index, int base, int limit);
-
-extern tss_t tss;
-
 void user_mode() {
-    __asm__("int 0x80;");
+    char* str = "welcome";
+    printf("%s, %d\n", str, 11);
 
-    int age = 10;
+    pid_t pid = fork();
+    if (pid > 0) {
+        printf("pid=%d, ppid=%d\n", getpid(), getppid());
+    } else if (0 == pid) {
+        printf("pid=%d, ppid=%d\n", getpid(), getppid());
 
-    while (true);
+        for (int i = 0; i < 10; ++i) {
+            printf("%d\n", i);
+        }
+    }
 }
 
 void kernel_main(void) {
     console_init();
-    gdt_init();
-    idt_init();
     clock_init();
 
     print_check_memory_info();
     memory_init();
     memory_map_int();
 
-    init_tss_item(6, &tss, sizeof(tss_t) - 1);
+    gdt_init();
+    idt_init();
 
     task_init();
 

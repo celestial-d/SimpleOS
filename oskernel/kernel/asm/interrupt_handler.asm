@@ -6,6 +6,8 @@ extern keymap_handler
 extern exception_handler
 extern system_call
 
+extern current
+
 global interrupt_handler_entry
 interrupt_handler_entry:
     push msg
@@ -14,7 +16,7 @@ interrupt_handler_entry:
 
     iret
 
-; 键盘中断
+; keyboard interrupt
 global keymap_handler_entry
 keymap_handler_entry:
     push 0x21
@@ -23,9 +25,37 @@ keymap_handler_entry:
 
     iret
 
+extern system_call_table
+
+; eax = id
+; ebx = para1
+; ecx = para2
+; edx = para3
 global system_call_entry
 system_call_entry:
-    call system_call
+    xchg bx, bx
+
+    mov esi, [current]
+
+    mov edi, [esp + 4 * 3]
+    mov [esi + 4 * 14], edi         ; save r3 esp
+
+    mov [esi + 4 * 15], ebp
+
+    push edx
+    push ecx
+    push ebx
+
+    call [system_call_table + eax * 4]
+
+    ; recover esp,paras
+    add esp, 12
+
+    ; recover ebp
+    mov esi, [current]
+    mov ebp, [esi + 4 * 15]
+
+    xchg bx, bx
 
     iret
 
