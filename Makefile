@@ -30,7 +30,7 @@ ${BUILD}/kernel.bin: ${BUILD}/boot/head.o ${BUILD}/init/main.o ${BUILD}/kernel/a
     ${BUILD}/kernel/asm/interrupt_handler.o ${BUILD}/kernel/traps.o ${BUILD}/kernel/chr_drv/keyboard.o ${BUILD}/kernel/exception.o \
     ${BUILD}/kernel/asm/clock_handler.o ${BUILD}/kernel/chr_drv/clock.o ${BUILD}/mm/memory.o ${BUILD}/kernel/kernel.o \
     ${BUILD}/mm/mm_101012.o ${BUILD}/kernel/task.o ${BUILD}/kernel/sched.o ${BUILD}/mm/malloc.o ${BUILD}/kernel/asm/sched.o \
-    ${BUILD}/kernel/kernel_thread.o ${BUILD}/kernel/asm/kernel.o ${BUILD}/kernel/syscall_table.o
+    ${BUILD}/kernel/asm/kernel.o ${BUILD}/kernel/system_call.o
 	ld -m elf_i386 $^ -o $@ -Ttext 0x1200
 
 ${BUILD}/mm/%.o: oskernel/mm/%.c
@@ -71,7 +71,11 @@ bochs: all
 	bochs -q -f bochsrc
 
 qemug: all
-	qemu-system-x86_64 -m 32M -hda ./build/hd.img -S -s
+	qemu-system-i386 \
+    	-m 32M \
+    	-boot c \
+    	-hda ./build/hd.img \
+    	-s -S
 
 qemu: all
 	qemu-system-i386 \

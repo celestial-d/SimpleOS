@@ -6,19 +6,14 @@
 #include "../include/linux/sched.h"
 
 extern void clock_init();
+extern void init_tss_item(int gdt_index, int base, int limit);
 
-void printf(char* msg) {
-    asm volatile("mov eax, 0; int 0x80"::"b"(msg));
-}
+extern tss_t tss;
 
-void fread(char* msg) {
-    asm volatile("mov eax, 1; int 0x80"::"b"(msg));
-}
+void user_mode() {
+    __asm__("int 0x80;");
 
-void user_entry() {
-    printf("user entry::::\n");
-
-    fread("qwertyui");
+    int age = 10;
 
     while (true);
 }
@@ -32,6 +27,8 @@ void kernel_main(void) {
     print_check_memory_info();
     memory_init();
     memory_map_int();
+
+    init_tss_item(6, &tss, sizeof(tss_t) - 1);
 
     task_init();
 

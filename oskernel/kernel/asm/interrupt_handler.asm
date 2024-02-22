@@ -4,6 +4,7 @@
 extern printk
 extern keymap_handler
 extern exception_handler
+extern system_call
 
 global interrupt_handler_entry
 interrupt_handler_entry:
@@ -13,12 +14,18 @@ interrupt_handler_entry:
 
     iret
 
-; keyboard interrupt
+; 键盘中断
 global keymap_handler_entry
 keymap_handler_entry:
     push 0x21
     call keymap_handler
     add esp, 4
+
+    iret
+
+global system_call_entry
+system_call_entry:
+    call system_call
 
     iret
 
@@ -97,7 +104,7 @@ INTERRUPT_HANDLER 0x24
 INTERRUPT_HANDLER 0x25
 INTERRUPT_HANDLER 0x26
 INTERRUPT_HANDLER 0x27
-INTERRUPT_HANDLER 0x28; rtc clock
+INTERRUPT_HANDLER 0x28; rtc
 INTERRUPT_HANDLER 0x29
 INTERRUPT_HANDLER 0x2a
 INTERRUPT_HANDLER 0x2b

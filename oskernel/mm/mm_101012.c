@@ -1,9 +1,16 @@
 #include "../include/asm/system.h"
 #include "../include/linux/kernel.h"
 #include "../include/linux/mm.h"
+#include "../include/linux/task.h"
 #include "../include/string.h"
 
-void virtual_memory_init() {
+#define PDT_START_ADDR 0x20000
+
+#define VIRTUAL_MEM_START 0x200000
+
+extern task_t* current;
+
+void* virtual_memory_init() {
     int* pdt = (int*)get_free_page();
 
     // clear
@@ -27,14 +34,14 @@ void virtual_memory_init() {
                 *item = 0b00000000000000000000000000000111 | virtual_addr;
             }
         } else {
-            for (int j = 0; j < 0x400; ++j) {
-                int* item = &ptt_arr[j];
+            //for (int j = 0; j < 0x400; ++j) {
+            //    int* item = &ptt_arr[j];
 
-                int virtual_addr = j * 0x1000;
-                virtual_addr = virtual_addr + i * 0x400 * 0x1000;
+            //    int virtual_addr = j * 0x1000;
+            //    virtual_addr = virtual_addr + i * 0x400 * 0x1000;
 
-                *item = 0b00000000000000000000000000000111 | virtual_addr;
-            }
+            //    *item = 0b00000000000000000000000000000111 | virtual_addr;
+            //}
         }
     }
 
@@ -45,4 +52,8 @@ void virtual_memory_init() {
     enable_page();
 
     BOCHS_DEBUG_MAGIC
+
+    printk("pdt addr: 0x%p\n", pdt);
+
+    return pdt;
 }

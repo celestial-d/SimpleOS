@@ -1,30 +1,55 @@
-[SECTION .data]
-r3_code_selector equ 4 << 3 | 0b011
-r3_data_selector equ 5 << 3 | 0b011
+[BITS 32]
 
-msg: db "0x%08x", 10, 13, 0
+extern user_mode
+extern _exit
+extern get_esp3
+
+extern current
+
+global move_to_user_mode
+
+[SECTION .data]
+R3_CODE_SELECTOR equ (4 << 3 | 0b11)
+R3_DATA_SELECTOR equ (5 << 3 | 0b11)
 
 [SECTION .text]
-[bits 32]
 
-extern printk
-extern get_free_page
-extern user_entry
+; eip
+; cs
+; eflags
+; esp3
+; ss3
+move_to_user_mode:
+    mov esi, [current]
 
-; stack:
-;   eip
-;   cs
-;   eflags
-;   esp
-;   ss
-global move_to_user
-move_to_user:
-    call get_free_page
+    push esi
+    call get_esp3
+    add esp, 4
 
-    push r3_data_selector
-    push eax
-    pushf
-    push r3_code_selector
-    push user_entry
+    push R3_DATA_SELECTOR       ; ss
+    push eax                    ; esp
+    pushf                       ; eflags
 
-    iret
+    mov ax, R3_CODE_SELECTOR
+    push eax                    ; cs
+
+    push user_mode_handler      ; eip
+
+    mov ax, R3_DATA_SELECTOR
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+
+    iretd
+
+user_mode_handler:
+    call user_mode
+
+    ;push 0
+    ;call _exit
+    ;add esp, 4
+
+    ; keep safe
+    sti
+    hlt
