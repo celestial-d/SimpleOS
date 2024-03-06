@@ -26,5 +26,9 @@ typedef unsigned short u16;
 typedef unsigned int u32;
 typedef unsigned long long u64;
 
+typedef u32 idx_t;
+typedef u32 FILE;
+
+typedef char* pchar;
 
 #endif

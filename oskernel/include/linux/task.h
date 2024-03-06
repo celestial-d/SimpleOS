@@ -3,9 +3,10 @@
 
 #include "types.h"
 #include "mm.h"
-
+#include "fs.h"
 // upper bound of processes
 #define NR_TASKS 64
+#define NR_OPEN 16
 
 typedef void* (*task_fun_t)(void*);
 
@@ -65,7 +66,19 @@ typedef struct task_t {
     int             ebp0;
     int             esp3;
     int             ebp3;
+
+    bool            resume_from_irq;
+
+    file_t*         file_descriptor[NR_OPEN];
+
+    dir_entry_t*    current_active_dir;     // related to ""pwd
+    m_inode_t*      current_active_dir_inode;
+
+    dir_entry_t*    root_dir;
+    m_inode_t*      root_dir_inode;
+
     int             magic;
+
 }task_t;
 
 typedef union task_union_t {
@@ -91,4 +104,13 @@ task_t* create_child(char* name, task_fun_t fun, int priority);
 
 int get_esp3(task_t* task);
 void set_esp3(task_t* task, int esp);
+
+void task_block(task_t* task);
+void task_unblock(task_t* task);
+
+void set_block(task_t* task);
+bool is_blocked(task_t* task);
+
+int find_empty_file_descriptor();
+
 #endif
