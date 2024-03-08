@@ -2,14 +2,21 @@
 #include "../include/linux/task.h"
 #include "../include/linux/sched.h"
 #include "../include/linux/mm.h"
+#include "../include/linux/fs.h"
+#include "../include/linux/hd.h"
+#include "../include/linux/sys.h"
 #include "../include/string.h"
+#include "../include/assert.h"
+
 
 extern void sched_task();
+extern void* kernel_thread_fun(void* arg);
 extern void move_to_user_mode();
 
 extern task_t* current;
 extern int jiffy;
 extern int cpu_tickes;
+extern hd_t* g_active_hd;
 
 task_t* tasks[NR_TASKS] = {0};
 
@@ -129,6 +136,27 @@ task_t* create_child(char* name, task_fun_t fun, int priority) {
     return task;
 }
 
+static void* init_thread_fun(void* arg) {
+    hd_init();
+
+    // get hdd info
+    init_active_hd_info(g_active_hd->dev_no);
+    init_active_hd_partition();
+
+    // create superblock
+    init_super_block();
+
+    // reset bitmap
+    reset_bitmap();
+
+    // create root dir
+    create_root_dir();
+
+    // open root dir
+    sys_open("/", O_RDWR);
+
+    move_to_user_mode();
+}
 
 void* idle(void* arg) {
     create_task("init", move_to_user_mode, 1);
@@ -191,6 +219,9 @@ void current_task_exit(int code) {
 
             current = NULL;
 
+            kfree_s((void*)(tmp->esp3 - PAGE_SIZE), 4096);
+            kfree_s(tmp, 4096);
+
             break;
         }
     }
@@ -233,4 +264,53 @@ int get_esp3(task_t* task) {
 
 void set_esp3(task_t* task, int esp) {
     task->tss.esp = esp;
+}
+
+void task_block(task_t* task) {
+    if (true == task->resume_from_irq) {
+        task->resume_from_irq = false;
+        return;
+    }
+
+    task->state = TASK_BLOCKED;
+
+    sched_task();
+}
+
+void task_unblock(task_t* task) {
+    if (TASK_BLOCKED != task->state) {
+        printk("[%s]task state: %d\n", __FUNCTION__, task->state);
+
+        task->resume_from_irq = true;
+
+        return;
+    }
+
+    task->state = TASK_READY;
+
+    sched_task();
+}
+
+void set_block(task_t* task) {
+    task->state = TASK_BLOCKED;
+}
+
+bool is_blocked(task_t* task) {
+    return (TASK_BLOCKED == task->state)? 1 : 0;
+}
+
+int find_empty_file_descriptor() {
+    int ret = -1;
+
+    assert(NULL != current);
+
+    for (int i = 0; i < NR_OPEN; ++i) {
+        file_t* file = &current->file_descriptor[i];
+        if (NULL == file->f_mode) {
+            ret = i;
+            break;
+        }
+    }
+
+    return ret;
 }
