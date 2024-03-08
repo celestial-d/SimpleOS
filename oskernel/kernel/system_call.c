@@ -11,7 +11,7 @@
 extern task_t* current;
 
 void* system_call_table[SYSTEM_CALL_TABLE_SIZE] = {
-        sys_write, sys_exit, sys_fork, sys_get_pid, sys_get_ppid, sys_active_ya_shell,
+        sys_write, sys_exit, sys_fork, sys_get_pid, sys_get_ppid, sys_active_d_shell,
         sys_fopen, sys_fclose, sys_fread, sys_fwrite
 };
 
