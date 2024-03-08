@@ -24,7 +24,7 @@ extern task_t* current;
 // depends on qemu emulation
 hd_channel_t    g_hd_channel[IDE_CHANNEL_NUMBER];
 
-// total number of hdds
+// total number of hdd
 uint g_hd_number = 0;
 
 
@@ -66,7 +66,7 @@ static void _hd_init() {
 
     INFO_PRINT("disk number: %d\n", hd_number);
 
-    // init, at most 4 hdds due to limitation of qemu
+    // init, at most 4 hdd due to limitation of qemu
     for (int i = 0; i < hd_number; ++i) {
         hd_t* hd;
 
