@@ -10,6 +10,8 @@
 
 extern task_t* current;
 
+int* g_pdt = (int*)0x20000;
+
 void* virtual_memory_init() {
     int* pdt = (int*)get_free_page();
 
@@ -56,4 +58,72 @@ void* virtual_memory_init() {
     printk("pdt addr: 0x%p\n", pdt);
 
     return pdt;
+}
+
+int get_pde_by_addr(int addr) {
+    int index = addr >> 22;
+    INFO_PRINT("pdt index: %d\n", index);
+
+    int ret = *(int*)(g_pdt + index);
+    INFO_PRINT("pde val: 0x%x\n", ret);
+
+    return ret;
+}
+
+int get_pte_by_addr(int addr) {
+    int pde_index = addr >> 22;
+    int pte_index = addr >> 12 & 0x3ff;
+
+    INFO_PRINT("pde_index: %d, pte_index: %d\n", pde_index, pte_index);
+
+    int* pde = *(int**)(g_pdt + pde_index);
+    INFO_PRINT("pde val: 0x%08x\n", pde);
+
+    int pte = *(pde + pte_index);
+    INFO_PRINT("pte val: 0x%08x\n", pte);
+
+    return pte;
+}
+
+static int* get_pttaddr_by_addr(int addr) {
+    int pde_index = addr >> 22;
+    int pte_index = addr >> 12 & 0x3ff;
+
+    INFO_PRINT("pde_index: %d, pte_index: %d\n", pde_index, pte_index);
+
+    int* pde = *(int**)(g_pdt + pde_index);
+    INFO_PRINT("pde val: 0x%08x\n", pde);
+
+    int* pttaddr = pde + pte_index;
+    INFO_PRINT("pte addr: 0x%08x\n", pttaddr);
+
+    return (int*)((int)pttaddr & 0xfffff000);
+}
+
+void handle_page_fault(int addr) {
+    INFO_PRINT("===== start handle page fault ====\n");
+
+    // abnormal for pte attributes?
+
+    int pte = get_pte_by_addr(addr);
+
+    // physical page
+    if (0 == pte) {
+        ERROR_PRINT("pte == 0, start handle..\n");
+
+
+        void* page = get_free_page();
+        int* pttaddr = get_pttaddr_by_addr(addr);
+
+        INFO_PRINT("phyics page: 0x%08x\n", page);
+
+        // calculate ptt index
+        int ptt_index = addr >> 12 & 0x3ff;
+
+        *(pttaddr + ptt_index) = (int)page | 0x007;
+
+        return;
+    }
+
+    return;
 }

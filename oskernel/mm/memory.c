@@ -55,7 +55,8 @@ void memory_map_int() {
     // reset
     memset(g_physics_memory_map.map, 0, g_physics_memory_map.pages_total);
 
-    // 1B map 1 page
+    /*
+     // 1B map 1 page
     g_physics_memory_map.bitmap_item_used = g_physics_memory_map.pages_total / PAGE_SIZE;
     if (0 != g_physics_memory_map.pages_total % PAGE_SIZE) {
         g_physics_memory_map.bitmap_item_used += 1;
@@ -73,7 +74,7 @@ void memory_map_int() {
 
     printk("physical memory starts here: 0x%X(%dM), used: %d pages\n",
            g_physics_memory_map.addr_base, g_physics_memory_map.addr_base / 1024 / 1024,
-           g_physics_memory_map.bitmap_item_used);
+           g_physics_memory_map.bitmap_item_used);*/
 }
 
 void print_check_memory_info() {
@@ -115,7 +116,7 @@ void* get_free_page() {
 
     void* ret = (void*)(g_physics_memory_map.addr_base + (i << 12));
 
-    printk("[%s]return: 0x%X, used: %d pages\n", __FUNCTION__, ret, g_physics_memory_map.bitmap_item_used);
+    //printk("[%s]return: 0x%X, used: %d pages\n", __FUNCTION__, ret, g_physics_memory_map.bitmap_item_used);
 
     return ret;
 }
@@ -131,5 +132,5 @@ void free_page(void* p) {
     g_physics_memory_map.map[index] = 0;
     g_physics_memory_map.bitmap_item_used--;
 
-    printk("[%s]return: 0x%X, used: %d pages\n", __FUNCTION__, p, g_physics_memory_map.bitmap_item_used);
+   // printk("[%s]return: 0x%X, used: %d pages\n", __FUNCTION__, p, g_physics_memory_map.bitmap_item_used);
 }
