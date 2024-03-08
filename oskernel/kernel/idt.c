@@ -13,6 +13,7 @@ extern void interrupt_handler_entry();
 extern void keymap_handler_entry();
 extern void clock_handler_entry();
 extern void system_call_entry();
+extern void hd_handler_entry();
 
 extern int interrupt_handler_table[0x2f];
 
@@ -36,6 +37,10 @@ void idt_init() {
             handler = (int)keymap_handler_entry;
         }
 
+        if (0x2e == i) {
+            handler = (int)hd_handler_entry;
+        }
+
         if (0x80 == i) {
             handler = system_call_entry;
         }
@@ -46,7 +51,7 @@ void idt_init() {
         p->reserved = 0;
         p->type = 0b1110;
         p->segment = 0;
-        p->DPL = 0;
+        p->DPL = (0x80 == i)? 3 : 0;
         p->present = 1;
     }
 
