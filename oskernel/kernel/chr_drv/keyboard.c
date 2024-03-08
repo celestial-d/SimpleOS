@@ -2,6 +2,9 @@
 #include "../../include/asm/io.h"
 #include "../../include/linux/types.h"
 #include "../../include/linux/traps.h"
+#include "../../include/d_shell.h"
+
+extern ushort g_shell_command_off;
 
 #define INV 0
 #define CODE_PRINT_SCREEN_DOWN 0xB7
@@ -327,5 +330,23 @@ void keymap_handler(int idt_index) {
     if (ch == INV)
         return;
 
+    // shell
+    if (8 == ch && 0 == g_shell_command_off) {
+        return;
+    }
+
     printk("%c", ch);
+
+    // shell
+    if (10 == ch) { // enter
+        exec_d_shell();
+        return;
+    }
+
+    if (8 == ch) {  // backspace
+        del_d_shell();
+        return;
+    }
+
+    run_d_shell(ch);
 }
