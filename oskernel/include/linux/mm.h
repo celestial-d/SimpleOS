@@ -41,9 +41,15 @@ void memory_map_int();
 
 void* virtual_memory_init();
 
+int get_pde_by_addr(int addr);
+int get_pte_by_addr(int addr);
+void handle_page_fault(int addr);
+
+// for physical memory
 void* get_free_page();
 void free_page(void* p);
 
+// for virtual memory
 void* kmalloc(size_t size);
 void kfree_s(void *obj, int size);
 #endif

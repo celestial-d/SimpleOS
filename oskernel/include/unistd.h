@@ -73,4 +73,13 @@ pid_t fork();
 pid_t getpid();
 pid_t getppid();
 
+void uactive_d_shell();
+
+FILE *fopen(const char *filename, const char *mode);
+int fclose(FILE *stream);
+
+// based on glibc to modify
+size_t fread(void *ptr, size_t size, FILE *stream);
+size_t fwrite(const void *ptr, size_t size, FILE *stream);
+
 #endif
