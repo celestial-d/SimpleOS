@@ -13,7 +13,7 @@
 #define __NR_get_pid    3
 #define __NR_get_ppid   4
 #define __NR_get_ppid   4
-#define __NR_active_ya_shell   5
+#define __NR_active_d_shell   5
 #define __NR_fopen   6
 #define __NR_fclose  7
 #define __NR_fread      8
