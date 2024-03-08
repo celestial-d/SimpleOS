@@ -13,3 +13,7 @@ inline void enable_page() {
                  "or eax, 0x80000000;"
                  "mov cr0, eax;");
 }
+
+uint get_cr2() {
+    asm volatile("mov eax, cr2;");
+}

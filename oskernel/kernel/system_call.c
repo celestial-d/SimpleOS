@@ -34,7 +34,7 @@ pid_t sys_get_ppid() {
     return get_task_ppid(current);
 }
 
-void sys_active_ya_shell() {
+void sys_active_d_shell() {
     active_d_shell();
 }
 
