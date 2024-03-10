@@ -58,8 +58,8 @@ task_t* create_task(char* name, task_fun_t fun, int priority) {
     // join to tasks
     tasks[task->task.pid] = &(task->task);
 
-    task->task.tss.cr3 = virtual_memory_init();
-    task->task.tss.eip = fun;
+    task->task.tss.cr3 = (int)task + sizeof(task_t);
+    task->task.tss.eip = (u32)fun;
 
     // r0 stack
     task->task.esp0 = (int)task + PAGE_SIZE;
@@ -106,7 +106,7 @@ task_t* create_child(char* name, task_fun_t fun, int priority) {
     tasks[task->task.pid] = &(task->task);
 
     task->task.tss.cr3 = (int)task + sizeof(task_t);
-    task->task.tss.eip = fun;
+    task->task.tss.eip = (u32)fun;
 
     // r0 stack
     task->task.esp0 = (int)task + PAGE_SIZE;
@@ -159,7 +159,7 @@ static void* init_thread_fun(void* arg) {
 }
 
 void* idle(void* arg) {
-    create_task("init", move_to_user_mode, 1);
+    create_task("init", kernel_thread_fun, 1);
 
     while (true) {
 

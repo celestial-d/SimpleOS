@@ -5,6 +5,8 @@
 static char buf[1024];
 
 int printk(const char * fmt, ...) {
+    CLI
+
     va_list args;
     int i;
 
@@ -15,6 +17,8 @@ int printk(const char * fmt, ...) {
     va_end(args);
 
     console_write(buf, i);
+
+    STI
 
     return i;
 }

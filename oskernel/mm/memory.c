@@ -47,7 +47,7 @@ void memory_map_int() {
     }
 
     g_physics_memory_map.addr_base = (uint)VALID_MEMORY_FROM;
-    g_physics_memory_map.map = (uchar*)VALID_MEMORY_FROM;
+    g_physics_memory_map.map = 0x10000;
 
     // total # of pages can be used
     g_physics_memory_map.pages_total = g_physics_memory.pages_total;

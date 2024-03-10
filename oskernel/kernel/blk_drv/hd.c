@@ -448,10 +448,10 @@ void create_root_dir() {
     INFO_PRINT("===== start: create root dir =====\n");
 
     int write_size;
-    char* name = "/";
+    char *name = "/";
 
     // 1、create dir
-    dir_entry_t* dir_entry = kmalloc(512);
+    dir_entry_t *dir_entry = kmalloc(512);
 
     memset(dir_entry->name, 0, 16);
     memcpy(dir_entry->name, name, strlen(name));
@@ -476,7 +476,7 @@ void create_root_dir() {
     // create inode
     memset(dir_entry, 0, 512);
 
-    d_inode_t* inode = dir_entry;
+    d_inode_t *inode = dir_entry;
     inode->i_mode = 777;
     inode->i_size = 0;
     inode->i_zone_off = 0;
@@ -491,7 +491,7 @@ void create_root_dir() {
 
     kfree_s(dir_entry, sizeof(dir_entry_t));
 
-    end:
+end:
     INFO_PRINT("===== end: create root dir =====\n");
 
     STI

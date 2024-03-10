@@ -79,7 +79,7 @@ reset_task:
 
 void sched() {
     if (NULL != current) {
-        if (TASK_SLEEPING != current->state) {
+        if (TASK_SLEEPING != current->state && TASK_BLOCKED != current->state) {
             current->state = TASK_READY;
         }
 

@@ -61,14 +61,14 @@ static void r3_gdt_data_item(int gdt_index, int base, int limit) {
     item->long_mode = 0;
     item->big = 1;
     item->granularity = 1;
-    item->base_high = base >> 24 & 0xff;
+    item->base_high = base >> 24 & 0xf;
 }
 
 void init_tss_item(int gdt_index, int base, int limit) {
     printk("init tss...\n");
 
     tss.ss0 = r0_data_selector;
-    tss.esp0 = 0x200000;
+    tss.esp0 = kmalloc(4096) + PAGE_SIZE;
     tss.iobase = sizeof(tss);
 
     gdt_item_t* item = &gdt[gdt_index];
@@ -85,7 +85,7 @@ void init_tss_item(int gdt_index, int base, int limit) {
     item->DPL = 0;
     item->type = 0b1001;
 
-    asm volatile("ltr ax;"::"a"(6 << 3));
+    asm volatile("ltr ax;"::"a"(tss_selector));
 }
 
 void gdt_init() {
