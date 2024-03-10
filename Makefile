@@ -87,7 +87,6 @@ qemug: all
     	-m 32M \
     	-boot c \
     	-hda ./build/hd.img \
-    	-hdb ./hdb.img \
     	-s -S
 
 qemu: all
@@ -95,7 +94,6 @@ qemu: all
 	-m 32M \
 	-boot c \
 	-hda ./build/hd.img \
-	-hdb ./hdb.img
 
 # for vmware
 vmdk: $(BUILD)/master.vmdk

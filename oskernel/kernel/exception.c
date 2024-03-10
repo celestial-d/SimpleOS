@@ -1,5 +1,4 @@
 #include "../include/linux/kernel.h"
-#include "../include/linux/types.h"
 
 char *messages[] = {
         "#DE Divide Error\0",

@@ -1,9 +1,7 @@
 #include "../include/linux/fs.h"
 #include "../include/linux/hd.h"
 #include "../include/linux/bitmap.h"
-#include "../include/linux/kernel.h"
 #include "../include/assert.h"
-#include "../include/asm/system.h"
 
 extern char block_bitmap_buf[512];
 extern bitmap_t block_bitmap;

@@ -38,12 +38,12 @@ _start:
 
     ; for keyboard
 .enable_8259a_main:
-    mov al, 11111100b
+    mov al, 11111000b
     out 21h, al
 
     ; disable other interrupt
 .disable_8259a_slave:
-    mov al, 11111111b
+    mov al, 00111111b
     out 0A1h, al
 
     ; call main

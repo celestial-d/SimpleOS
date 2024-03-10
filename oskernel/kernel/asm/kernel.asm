@@ -46,9 +46,9 @@ move_to_user_mode:
 user_mode_handler:
     call user_mode
 
-    ;push 0
-    ;call _exit
-    ;add esp, 4
+    push 0
+    call _exit
+    add esp, 4
 
     ; keep safe
     sti

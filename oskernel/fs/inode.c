@@ -1,7 +1,6 @@
 #include "../include/linux/fs.h"
 #include "../include/linux/hd.h"
 #include "../include/linux/bitmap.h"
-#include "../include/linux/kernel.h"
 #include "../include/assert.h"
 
 extern char inode_bitmap_buf[512];

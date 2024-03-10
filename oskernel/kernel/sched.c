@@ -1,7 +1,5 @@
 #include "../include/linux/sched.h"
 #include "../include/linux/task.h"
-#include "../include/linux/kernel.h"
-#include "../include/asm/system.h"
 
 extern void switch_task(task_t* task);
 extern void switch_idle_task(task_t* task);
@@ -11,14 +9,14 @@ extern task_t* tasks[NR_TASKS];
 task_t* current = NULL;
 
 task_t* find_ready_task() {
-    task_t* next = NULL;
+    task_t *next = NULL;
 
     // check whether all tasks are scheduled
     bool is_all_zero = true;
     bool is_null = true;
 
     for (int i = 1; i < NR_TASKS; ++i) {
-        task_t* task = tasks[i];
+        task_t *task = tasks[i];
 
         if (NULL == task) continue;
 
@@ -31,11 +29,11 @@ task_t* find_ready_task() {
     }
 
     // if not task，is_all_zero should be true
-    if (!is_null && is_all_zero)  goto reset_task;
+    if (!is_null && is_all_zero) goto reset_task;
 
     // find out the scheduled task
     for (int i = 1; i < NR_TASKS; ++i) {
-        task_t* task = tasks[i];
+        task_t *task = tasks[i];
 
         if (NULL == task) {
             continue;
@@ -65,7 +63,7 @@ task_t* find_ready_task() {
     /**
      * if all counter == 0, means scheduled before
      */
-    reset_task:
+reset_task:
     if (is_all_zero) {
         for (int i = 1; i < NR_TASKS; ++i) {
             task_t *tmp = tasks[i];

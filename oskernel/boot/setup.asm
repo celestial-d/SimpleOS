@@ -153,7 +153,7 @@ protected_mode:
     ; read kernel to memory
     mov edi, KERNEL_ADDR
     mov ecx, 3
-    mov bl, 60
+    mov bl, 100
     call read_hd
 
     jmp CODE_SELECTOR:KERNEL_ADDR

@@ -41,7 +41,6 @@ void* kernel_thread_fun(void* arg) {
     // create superblk
     init_super_block();
 
-
     reset_bitmap();
 
     // create root dir

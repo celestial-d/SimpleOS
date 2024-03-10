@@ -1,6 +1,5 @@
 #include "../../include/linux/kernel.h"
 #include "../../include/asm/io.h"
-#include "../../include/linux/types.h"
 #include "../../include/linux/traps.h"
 #include "../../include/d_shell.h"
 
@@ -214,7 +213,7 @@ static char keymap[][4] = {
         /* 0x5D */ {INV, INV, false, false},  // Clipboard
         /* 0x5E */ {INV, INV, false, false},  //
 
-        // Print Screen 是强制定义 本身是 0xB7
+        // Print Screen 0xB7
         /* 0x5F */ {INV, INV, false, false}, // PrintScreen
 };
 
@@ -241,7 +240,7 @@ void keymap_handler(int idt_index) {
     uchar scancode = in_byte(0x60);
 
 
-    if (scancode == 0xe0)
+    if (scancode == 0xe0)  //ext state
     {
 
         extcode_state = true;
@@ -251,13 +250,8 @@ void keymap_handler(int idt_index) {
 
     if (extcode_state)
     {
-
         ext = 3;
-
-
         scancode |= 0xe000;
-
-
         extcode_state = false;
     }
 
@@ -274,7 +268,6 @@ void keymap_handler(int idt_index) {
         return;
     }
 
-
     bool breakcode = ((scancode & 0x0080) != 0);
     if (breakcode)
     {
@@ -282,7 +275,6 @@ void keymap_handler(int idt_index) {
         keymap[makecode][ext] = false;
         return;
     }
-
 
     keymap[makecode][ext] = true;
 

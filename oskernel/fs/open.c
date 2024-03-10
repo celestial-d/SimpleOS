@@ -1,7 +1,6 @@
 #include "../include/linux/sys.h"
 #include "../include/linux/kernel.h"
 #include "../include/linux/task.h"
-#include "../include/linux/fs.h"
 #include "../include/linux/hd.h"
 #include "../include/asm/system.h"
 #include "../include/string.h"

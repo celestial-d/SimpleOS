@@ -69,6 +69,7 @@ void init_tss_item(int gdt_index, int base, int limit) {
 
     tss.ss0 = r0_data_selector;
     tss.esp0 = 0x200000;
+    tss.iobase = sizeof(tss);
 
     gdt_item_t* item = &gdt[gdt_index];
 
@@ -101,10 +102,13 @@ void gdt_init() {
 
     r3_code_selector = 4 << 3 | 0b011;
     r3_data_selector = 5 << 3 | 0b011;
+    tss_selector = 6 << 3;
 
     gdt_ptr.base = &gdt;
     gdt_ptr.limit = sizeof(gdt) - 1;
 
     BOCHS_DEBUG_MAGIC
     __asm__ volatile ("lgdt gdt_ptr;");
+
+    init_tss_item(6, &tss, sizeof(tss_t) - 1);
 }

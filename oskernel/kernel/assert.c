@@ -2,7 +2,7 @@
 
 static u8 buf[1024];
 
-
+//block
 static void spin(char *name)
 {
     printk("spinning in %s ...\n", name);

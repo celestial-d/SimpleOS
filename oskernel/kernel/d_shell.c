@@ -50,7 +50,7 @@ void active_d_shell() {
 
     print_shell_functions();
 
-    printk("[zzzz:%s]:", current->current_active_dir->name);
+    printk("[d-shell:%s]:", current->current_active_dir->name);
 }
 
 void close_d_shell() {
@@ -143,9 +143,9 @@ void exec_d_shell() {
         goto end;
     }
 
-    // anotate input
+    // annotate input
     int commands_len = 0;
-    pchar* commands = parse_shell_command(&commands_len);
+    pchar *commands = parse_shell_command(&commands_len);
 
     // clean
     memset(g_shell_command, 0, 64);
@@ -153,38 +153,38 @@ void exec_d_shell() {
 
     if (!strcmp("h", commands[0]) || !strcmp("help", commands[0])) {
         print_shell_functions();
-    } else if(!strcmp("print_super_block", commands[0])) {
+    } else if (!strcmp("print_super_block", commands[0])) {
         print_super_block();
-    } else if(!strcmp("print_block_bitmap", commands[0])) {
+    } else if (!strcmp("print_block_bitmap", commands[0])) {
         print_block_bitmap();
-    } else if(!strcmp("reset_block_bitmap", commands[0])) {
+    } else if (!strcmp("reset_block_bitmap", commands[0])) {
         reset_block_bitmap();
-    } else if(!strcmp("print_inode_bitmap", commands[0])) {
+    } else if (!strcmp("print_inode_bitmap", commands[0])) {
         print_inode_bitmap();
-    } else if(!strcmp("reset_inode_bitmap", commands[0])) {
+    } else if (!strcmp("reset_inode_bitmap", commands[0])) {
         reset_inode_bitmap();
-    } else if(!strcmp("reset_bitmap", commands[0])) {
+    } else if (!strcmp("reset_bitmap", commands[0])) {
         reset_bitmap();
-    } else if(!strcmp("print_bitmap", commands[0])) {
+    } else if (!strcmp("print_bitmap", commands[0])) {
         print_bitmap();
-    } else if(!strcmp("print_root_dir", commands[0])) {
+    } else if (!strcmp("print_root_dir", commands[0])) {
         print_root_dir();
-    } else if(!strcmp("ls", commands[0])) {
+    } else if (!strcmp("ls", commands[0])) {
         ls_current_dir();
     } else if (!strcmp("mkdir", commands[0])) {
         create_dir(commands[1]);
-    } else if(!strcmp("rm", commands[0])) {
+    } else if (!strcmp("rm", commands[0])) {
         rm_directory(commands[1]);
-    } else if(!strcmp("cd", commands[0])) {
+    } else if (!strcmp("cd", commands[0])) {
         cd_directory(commands[1]);
-    } else if(!strcmp("touch", commands[0])) {
+    } else if (!strcmp("touch", commands[0])) {
         create_file(commands[1]);
-    } else if(!strcmp("echo", commands[0])) {
+    } else if (!strcmp("echo", commands[0])) {
         write_file(commands[1], commands[3]);
-    } else if(!strcmp("cat", commands[0])) {
-        char* data = read_file(commands[1]);
+    } else if (!strcmp("cat", commands[0])) {
+        char *data = read_file(commands[1]);
         INFO_PRINT("%s\n", data);
-    } else if(!strcmp("test_pf", commands[0])) {
+    } else if (!strcmp("test_pf", commands[0])) {
         test_page_fault(commands[1]);
     } else {
         for (int i = 0; i < commands_len; ++i) {
@@ -201,8 +201,8 @@ void exec_d_shell() {
         kfree_s(commands[i], strlen(commands[i]));
     }
 
-    end:
-    printk("[zzzz:%s]:", current->current_active_dir->name);
+end:
+    printk("[d-shell:%s]:", current->current_active_dir->name);
 }
 
 
@@ -213,5 +213,5 @@ void del_d_shell() {
 }
 
 void print_shell_header() {
-    printk("[zzzz:%s]:", current->current_active_dir->name);
+    printk("[d-shell:%s]:", current->current_active_dir->name);
 }

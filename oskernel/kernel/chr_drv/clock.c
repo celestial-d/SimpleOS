@@ -1,4 +1,3 @@
-#include "../../include/linux/kernel.h"
 #include "../../include/linux/traps.h"
 #include "../../include/asm/io.h"
 #include "../../include/linux/sched.h"

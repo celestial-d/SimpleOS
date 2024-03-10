@@ -22,12 +22,9 @@ bool bitmap_test(bitmap_t *map, idx_t index)
     // get index
     idx_t idx = index - map->offset;
 
-
     u32 bytes = idx / 8;
 
-
     u8 bits = idx % 8;
-
 
     return (map->bits[bytes] & (1 << bits));
 }
@@ -35,12 +32,9 @@ bool bitmap_test(bitmap_t *map, idx_t index)
 // set val
 void bitmap_set(bitmap_t *map, idx_t index, bool value)
 {
-
     idx_t idx = index - map->offset;
 
-
     u32 bytes = idx / 8;
-
 
     u8 bits = idx % 8;
     if (value)
@@ -63,23 +57,19 @@ int bitmap_scan(bitmap_t *map, u32 count)
     u32 next_bit = 0;
     u32 counter = 0;
 
-
+    //scan from begin
     while (bits_left-- > 0)
     {
         if (!bitmap_test(map, map->offset + next_bit))
         {
-
             counter++;
         }
         else
         {
-
             counter = 0;
         }
 
-
         next_bit++;
-
 
         if (counter == count)
         {
@@ -88,10 +78,8 @@ int bitmap_scan(bitmap_t *map, u32 count)
         }
     }
 
-
     if (start == EOF)
         return EOF;
-
 
     bits_left = count;
     next_bit = start;

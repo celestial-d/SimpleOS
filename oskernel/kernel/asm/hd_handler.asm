@@ -22,7 +22,6 @@ hd_handler_entry:
     cmp ecx, 0
     je .hd_handler_fail
 
-
     mov [wait_for_request], ecx
 
 .save_env:

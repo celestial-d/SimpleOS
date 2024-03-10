@@ -198,6 +198,7 @@ void task_exit(int code, task_t* task) {
 
             current = NULL;
 
+            kfree_s((void*)(tmp->esp3), 4096);
             kfree_s(tmp, 4096);
 
             break;

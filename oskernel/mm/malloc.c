@@ -1,6 +1,5 @@
 #include "../include/linux/mm.h"
 #include "../include/asm/system.h"
-#include "../include/linux/kernel.h"
 
 struct bucket_desc {	/* 16 bytes */
     void			    *page;
@@ -113,14 +112,13 @@ void* kmalloc(size_t len) {
     return(retval);
 }
 
-void kfree_s(void *obj, int size)
-{
-    void		*page;
-    struct _bucket_dir	*bdir;
-    struct bucket_desc	*bdesc, *prev;
+void kfree_s(void *obj, int size) {
+    void *page;
+    struct _bucket_dir *bdir;
+    struct bucket_desc *bdesc, *prev;
     bdesc = prev = 0;
     /* Calculate what page this object lives in */
-    page = (void *)  ((unsigned long) obj & 0xfffff000);
+    page = (void *) ((unsigned long) obj & 0xfffff000);
     /* Now search the buckets looking for that page */
     for (bdir = bucket_dir; bdir->size; bdir++) {
         prev = 0;
@@ -134,7 +132,7 @@ void kfree_s(void *obj, int size)
         }
     }
     return;
-    found:
+found:
     CLI
     *((void **)obj) = bdesc->freeptr;
     bdesc->freeptr = obj;

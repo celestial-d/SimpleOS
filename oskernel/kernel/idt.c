@@ -42,7 +42,7 @@ void idt_init() {
         }
 
         if (0x80 == i) {
-            handler = system_call_entry;
+            handler = (int)system_call_entry;
         }
 
         p->offset0 = handler & 0xffff;

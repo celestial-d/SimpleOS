@@ -114,6 +114,17 @@ void *memcpy(void *dest, const void *src, size_t count)
     return dest;
 }
 
+void* memcpy2(void* dest, const void* src, size_t count, int off) {
+    char *ptr = dest;
+    ptr += off;
+
+    while (count--)
+    {
+        *ptr++ = *((char *)(src++));
+    }
+    return dest;
+}
+
 void *memchr(const void *str, int ch, size_t count)
 {
     char *ptr = (char *)str;

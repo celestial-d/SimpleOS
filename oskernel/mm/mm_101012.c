@@ -13,14 +13,14 @@ extern task_t* current;
 int* g_pdt = (int*)0x20000;
 
 void* virtual_memory_init() {
-    int* pdt = (int*)get_free_page();
+    int* pdt = (int*)PDT_START_ADDR;
 
     // clear
     memset(pdt, 0, PAGE_SIZE);
 
     for (int i = 0; i < 4; ++i) {
         // pdt and pde
-        int ptt = (int)get_free_page() + (i * 0x1000);
+        int ptt = (int)PDT_START_ADDR + ((i + 1) * 0x1000);
         int pde = 0b00000000000000000000000000000111 | ptt;
 
         pdt[i] = pde;
